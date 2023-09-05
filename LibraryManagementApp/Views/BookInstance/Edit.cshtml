@@ -1,0 +1,55 @@
+﻿@using LibraryManagementApp.Enums;
+@model BookInstance
+
+@{
+    ViewData["Title"] = "Edit A Book Instance";
+}
+
+<div class="container">
+    <div class="row">
+        <h4 class="text-center mt-3 mb-5">Edit An Instance</h4>
+
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="card" style="margin:auto; max-width:400px;">
+                <div class="card-body">
+                    <div class="form-group mb-2">
+                        <label asp-for="BookId" class="form-label">Book: </label>
+                        <select asp-for="BookId" class="form-control form-select" asp-items="ViewBag.Books"></select>
+                        <span asp-validation-for="BookId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="IsbnNumber" class="form-label">Isbn Number: </label>
+                        <input asp-for="IsbnNumber" class="form-control" />
+                        <span asp-validation-for="IsbnNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="bookStatus" class="form-label">Book Status: </label>
+                        <select asp-for="bookStatus" class="form-control form-select" asp-items="Html.GetEnumSelectList<BookStatus>()"></select>
+                        <span asp-validation-for="bookStatus" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-4">
+                        <a class="btn btn-light" asp-action="Index"><i class="bi bi-box-arrow-left"></i> Show All</a>
+                        <button type="submit" class="float-end btn btn-outline-warning">
+                            Save & Update <i class="bi bi-cloud-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById("ImagePreview");
+            output.src = $("#Image").val();
+        });
+        $("#Image").on("change", function () {
+            var output = document.getElementById("ImagePreview");
+            output.src = $(this).val();
+        })
+    </script>
+}

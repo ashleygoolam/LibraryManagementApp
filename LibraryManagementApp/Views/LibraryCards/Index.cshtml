@@ -1,0 +1,61 @@
+﻿@using LibraryManagementApp.Models;
+@model PaginatedList<LibraryCard>
+
+@{
+    ViewData["Title"] = "Index";
+    var viewData = new ViewDataDictionary(ViewData);
+    viewData["actionPage"] = "Index";
+}
+
+<h4 class="mt-4 mb-5 text-center"><i class="bi bi-cash-coin"></i> Patreon's</h4>
+<div class="row" style="max-width:1300px; margin:auto;">
+    <table class="table">
+        <thead class="text-center">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().CardNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Balance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().isActivated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ApplicationUser)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CardNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+                </td>
+                <td>
+                    @item.isActivated
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser!.Id)
+                </td>
+                <td>
+                    <a class="btn btn-light me-2" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <a class="btn btn-outline-primary me-2" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info-circle"></i> Info</a>
+                    <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i> Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@if (User.Identity!.IsAuthenticated && User.IsInRole("Admin"))
+{
+    @await Html.PartialAsync("_CreateItem", "LibraryCards")
+}
+
+<partial name="_Pager" view-data="viewData" />

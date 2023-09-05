@@ -1,0 +1,61 @@
+﻿@using LibraryManagementApp.Data.ViewModels;
+@model RegisterVM;
+
+@{
+    ViewData["Title"] = "Sign up for a new Account";
+}
+
+<div class="row mt-4">
+    @if (TempData["Error"] != null)
+    {
+        <div class="col-md-12 alert alert-danger text-center" style="width: 850px; margin:auto;">
+            <span><b>Sorry!</b> - @TempData["Error"] </span>
+        </div>
+    }
+
+    <div class="card justify-content-center mt-5" style="width: 850px; margin:auto;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="card-header">
+                            <h2 class="card-title float-start"><strong>Create an Account</strong></h2>
+                        </div>
+                        <form asp-action="Register">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group mt-4">
+                                <label asp-for="FullName" class="form-label">Full Name:</label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label asp-for="EmailAddress" class="form-label">Email Address:</label>
+                                <input asp-for="EmailAddress" class="form-control" />
+                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label asp-for="Password" class="form-label">Password:</label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label asp-for="ConfirmPassword" class="form-label">Confirm Password:</label>
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <button class="btn btn-outline-success float-end" type="submit">Register <i class="bi bi-check-circle"></i></button>
+                                <a class="btn btn-light" asp-controller="Book" asp-action="Index"><i class="bi bi-backspace"></i> Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/images/app/institute.jpg" class="card-img-top" alt="..." />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

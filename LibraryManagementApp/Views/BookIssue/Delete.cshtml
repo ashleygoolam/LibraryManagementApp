@@ -1,0 +1,69 @@
+﻿@model BookIssue
+@{
+    ViewData["Title"] = "Delete An Issue";
+}
+
+<div class="container">
+    <p>
+        <h4 class="text-center mt-2 mb-4">Are You Sure?</h4>
+    </p>
+    <div class="row">
+        <div style="max-width: 450px; margin: auto;">
+            <div class="text-center">
+                <p class="mb-2">The following Issue will be deleted and all the Information will be lost!</p>
+            </div>
+            <div class="card mt-5">
+                <table class="mt-3 mb-3 text-center text-white" style="display:flex; justify-content:center;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Borrower's Name:</strong></td>
+                            <td>@Model.BorrowersName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Isbn Number:</strong></td>
+                            <td>@Model.BookInstance?.IsbnNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Borrowed By:</strong></td>
+                            <td>@Model.BorrowingLibrariansName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Time Borrowed:</strong></td>
+                            <td>@Model.TimeBorrowed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Returned By:</strong></td>
+                            <td>@Model.ReturningLibrariansName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Time Returned:</strong></td>
+                            <td>@Model.TimeReturned</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Due Date:</strong></td>
+                            <td>@Model.DueDate</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Book Status:</strong></td>
+                            <td>@Model.bookStatus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Book Return Status:</strong></td>
+                            <td>@Model.bookReturnStatus</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="mt-5">
+                <form asp-action="Delete">
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="bi bi-box-arrow-left"></i> Cancel
+                    </a>
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger float-end">Confirm <i class="bi bi-trash3"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

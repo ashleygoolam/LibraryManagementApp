@@ -1,0 +1,71 @@
+﻿@using LibraryManagementApp.Data.ViewModels;
+@model NewAuthorVM
+
+@{
+    ViewData["Title"] = "Create a new Author";
+}
+
+<div class="container">
+    <p>
+        <h4 class="text-center mb-5">Create a new Author</h4>
+    </p>
+    <div style="max-width: 650px; margin: auto;">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="row g-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <label asp-for="FullName" class="form-label">FullName:</label>
+                                    <input asp-for="FullName" type="text" class="form-control" id="inputTitle">
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Biography" class="form-label">Biography:</label>
+                                    <textarea asp-for="Biography" class="form-control" id="inputDescription" rows="4"></textarea>
+                                    <span asp-validation-for="Biography" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="ProfilePicture" class="form-label">Profile Picture:</label>
+                            <input asp-for="ProfilePicture" class="form-control" id="fileUpload" onchange="getImagePreview(event)">
+                            <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center mb-3">
+                    <img class="rounded-circle" id="imagePreview" src="" alt="Image for new Author"
+                         style="width: 250px;">
+                </div>
+            </div>
+            <div class="mt-5">
+                <a asp-action="Index"
+                   class="btn btn-light">
+                    <i class="bi bi-box-arrow-left"></i> Back to List
+                </a>
+                <button type="submit"
+                        class="float-end btn btn-outline-success" style="margin-right: 78px;">
+                    Save & Update <i class="bi bi-cloud-check"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+        function getImagePreview(event){
+            var image = URL.createObjectURL(event.target.files[0]);
+            console.log(event.target.files[0]);
+            var previewSection = document.getElementById('imagePreview');
+            previewSection.src = image;
+        }
+    </script>
+}

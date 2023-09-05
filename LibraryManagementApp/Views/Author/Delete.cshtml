@@ -1,0 +1,31 @@
+﻿@model Author
+@{
+    ViewData["Title"] = "Delete Author";
+}
+
+<div class="container">
+    <p>
+        <h4 class="text-center mt-5 mb-4">Are You Sure?</h4>
+    </p>
+    <div class="row">
+        <div style="max-width: 450px; margin: auto;">
+            <div class="text-center">
+                <p class="mb-2">The following Author will be deleted!</p>
+                <div class="bg-danger-subtle" style="border-radius: 9px; padding: 9px 0 9px 0">
+                    <img class="rounded-circle" src="~/Images/Authors/@Model.ProfilePicture" alt="Image for @Model.FullName" style="width: 250px;">
+                </div>
+                <h5 class="mt-2 mb-2">@Model.FullName</h5>
+                <p>@Model.Biography</p>
+            </div>
+            <div class="mt-5">
+                <form asp-action="Delete">
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="bi bi-box-arrow-left"></i> Show All
+                    </a>
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger float-end">Confirm <i class="bi bi-trash3"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

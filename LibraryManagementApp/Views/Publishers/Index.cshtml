@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Publisher>
+
+@{
+    ViewData["Title"] = "List of Publishers";
+}
+
+<div class="container">
+    <h4 class="mt-4 text-center"><i class="bi bi-building"></i> Hottest Publishers In Business</h4>
+    <div class="row g-6 mt-5">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2 mb-5">
+                <div class="text-center">
+                    <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
+                        <img class="rounded-circle" src="~/Images/Publishers/@item.PublisherLogo" alt="Image for @item.PublisherName" style="width: 100px;">
+                        <h5 class="card-title mt-2">@item.PublisherName</h5>
+                        <small>Rating: <strong>@item.Rating</strong></small>
+                    </a>
+                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Librarian")))
+                    {
+                        <div class="mt-2">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                <i class="bi bi-trash3"></i> Delete
+                            </a>
+                        }
+                        </div>  
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Librarian")))
+{
+    @await Html.PartialAsync("_CreateItem", "Publishers")
+}

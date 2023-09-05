@@ -1,0 +1,61 @@
+﻿@using LibraryManagementApp.Enums;
+@using LibraryManagementApp.Data.ViewModels;
+@model BookInstance
+
+@{
+    ViewData["Title"] = "Create an Instance of a Book";
+}
+
+<div class="row text mb-3">
+    <div class="col-md-8 offset-2">
+        <h4 class="text-center mt-3 mb-5">Create a new Book Instance</h4>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row" style="max-width:500px; margin:auto;">
+                        <div class="form-group mb-2">
+                            <label asp-for="BookId" class="form-label">Book:</label>
+                            <select asp-for="BookId" class="form-control form-select" asp-items="ViewBag.Books"></select>
+                            <span asp-validation-for="BookId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label asp-for="IsbnNumber" class="form-label">Isbn Number:</label>
+                            <input asp-for="IsbnNumber" class="form-control" />
+                            <span asp-validation-for="IsbnNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="bookStatus" class="form-label">Book Status:</label>
+                            <select asp-for="bookStatus" class="form-select">
+                                <option>New</option>
+                                <option>Good</option>
+                                <option>MinimumDamage</option>
+                                <option>Damaged</option>
+                            </select>
+                            <span asp-validation-for="bookStatus" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-4">
+                            <a class="btn btn-light" asp-action="Index"><i class="bi bi-box-arrow-left"></i> Show All</a>
+                            <button type="submit" class="float-end btn btn-outline-success">
+                                Create <i class="bi bi-check2-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5 text-center">
+    <p>Is the Book is Unavailabe? <a asp-controller="Book" asp-action="Create">Click here to create a new Book.</a></p>
+</div>
+
+@section Scripts{
+    <script>
+        $("#Image").on("change", function () {
+            var output = document.getElementById("ImagePreview");
+            output.src = $(this).val();
+        })
+    </script>
+}

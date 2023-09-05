@@ -1,0 +1,77 @@
+﻿@using LibraryManagementApp.Enums
+@model BookIssue
+@{
+    ViewData["Title"] = "Book Issue Details";
+    string name = User.Identity.Name;
+    var today = DateTime.Now.Date.ToString("yyyy-MM-dd");
+}
+
+<div class="row" style="margin: auto; display: flex; justify-content: center;">
+    <div class="col" style="max-width: 500px;">
+        <div class="card mt-5">
+            <div class="card-header mt-2">
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a class="mt-2 float-end" asp-action="Edit" asp-route-id="@Model.Id">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                }
+                <h4 class="text-center">Issue Details</h4>
+            </div>
+            <div class="card-body text-white text-center">
+                <table style="display:flex; justify-content:center;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Borrower's Name:</strong></td>
+                            <td>@Model.BorrowersName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Isbn Number:</strong></td>
+                            <td>@Model.BookInstance?.IsbnNumber</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Borrowed By:</strong></td>
+                            <td>@Model.BorrowingLibrariansName</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Time Borrowed:</strong></td>
+                            <td>@Model.TimeBorrowed</td>
+                        </tr>
+
+                        @if(Model.ReturningLibrariansName != null)
+                        {
+                            <tr>
+                                <td><strong>Returned By:</strong></td>
+                                <td>@Model.ReturningLibrariansName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Time Returned:</strong></td>
+                                <td>@Model.TimeReturned</td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td><strong>Due Date:</strong></td>
+                            <td>@Model.DueDate</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Book Status:</strong></td>
+                            <td>@Model.bookStatus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Book Return Status:</strong></td>
+                            <td>@Model.bookReturnStatus</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-5">
+                    <a class="btn btn-light float-start" asp-action="Index"><i class="bi bi-box-arrow-left"></i> Show All</a>
+                    @if (Model.bookReturnStatus == BookReturnStatus.NotYetReturned)
+                    {
+                        <a class="btn btn-outline-success float-end" asp-action="ReturnBook" asp-route-id="@Model.Id"><i class="bi bi-check2-circle"></i> Return</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

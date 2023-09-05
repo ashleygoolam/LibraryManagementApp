@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    body {
+        background-image: url('../images/app/Front-Page.jpg');
+        background-size:cover;
+        background-repeat: no-repeat;
+        background-position:center;
+    }
+</style>
+
+<div class="text-center text-white">
+    <h3 class="" style="margin-top:126px;" id="element1">Welcome To ...</h3>
+    <h1 class="" style="margin-top:5px;" id="element2">The LibraryManagementApp</h1>
+    <p id="element3">Your Journey begins here: <a asp-controller="Book" asp-action="Index">Click View Available Books</a> ^_^.</p>
+</div>
+
+<script>
+    const element = document.getElementById('element1');
+    const element2 = document.getElementById('element2');
+    const element3 = document.getElementById('element3');
+
+    TweenMax.from(element, 1, { opacity: 0, delay: .1, y: -20, ease: Expo.easeInOut })
+    TweenMax.from(element2, 1, { opacity: 0, delay: .15, x: -20, ease: Expo.easeInOut })
+    TweenMax.from(element3, 1, { opacity: 0, delay: .15, ease: Expo.easeInOut })
+</script>

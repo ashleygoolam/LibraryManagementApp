@@ -1,0 +1,83 @@
+﻿@using LibraryManagementApp.Enums;
+@using LibraryManagementApp.Data.ViewModels;
+@model EditBookIssueVM
+
+@{
+    ViewData["Title"] = "Edit A Book Issue";
+    DateTime TimeBorrowedDate = ViewBag.TimeBorrowedDate;
+    var low = TimeBorrowedDate.AddDays(1).ToString("yyyy-MM-dd");
+    var high = TimeBorrowedDate.AddDays(14).ToString("yyyy-MM-dd");
+}
+
+<div class="row" style="margin: auto; display: flex; justify-content: center;">
+    <h4 class="text-center mt-3 mb-4">Edit an Issue</h4>
+    <div class="col" style="max-width: 500px;">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-md-12 form-group mb-2">
+                            <label asp-for="BookInstanceId" class="form-label">Isbn Number(Read Only): </label>
+                            <select asp-for="BookInstanceId" class="form-control" asp-items="ViewBag.BookInstances" disabled></select>
+                        </div>
+                        <div class="col-md-6 form-group mb-2">
+                            <label asp-for="BorrowersName" class="form-label">Borrower: </label>
+                            <input asp-for="BorrowersName" class="form-control" />
+                            <span asp-validation-for="BorrowersName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 form-group mb-2">
+                            <label asp-for="TimeBorrowed" class="form-label">Issue Date: </label>
+                            <input asp-for="TimeBorrowed" type="date" class="form-control" />
+                            <span asp-validation-for="TimeBorrowed" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 form-group mb-2">
+                            <label asp-for="BorrowingLibrariansName" class="form-label">Borrowing Librarian: </label>
+                            <input asp-for="BorrowingLibrariansName" class="form-control" />
+                            <span asp-validation-for="BorrowingLibrariansName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 form-group mb-2">
+                            <label asp-for="bookStatus" class="form-label">Status:</label>
+                            <select asp-for="bookStatus" class="form-select">
+                                <option>New</option>
+                                <option>Good</option>
+                                <option>MinimumDamage</option>
+                            </select>
+                            <span asp-validation-for="bookStatus" class="text-danger"></span>
+                        </div>
+                        @if (Model.bookReturnStatus != BookReturnStatus.NotYetReturned)
+                        {
+                            <div class="col-md-6 form-group mb-2">
+                                <label asp-for="ReturningLibrariansName" class="form-label">Returning Librarian: </label>
+                                <input asp-for="ReturningLibrariansName" class="form-control" />
+                                <span asp-validation-for="ReturningLibrariansName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 form-group mb-2">
+                                <label asp-for="bookReturnStatus" class="form-label">Return Status(Read Only):</label>
+                                <select asp-for="bookReturnStatus" class="form-control" asp-items="Html.GetEnumSelectList<BookReturnStatus>()" disabled></select>
+                                <span asp-validation-for="bookReturnStatus" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 form-group mb-2">
+                                <label asp-for="TimeReturned" class="form-label">Time Returned: </label>
+                                <input asp-for="TimeReturned" type="date" class="form-control" />
+                                <span asp-validation-for="TimeReturned" class="text-danger"></span>
+                            </div>
+                        }
+                        <div class="col-md-6 form-group mb-2">
+                            <label asp-for="DueDate" class="form-label">Due Date: </label>
+                            <input asp-for="DueDate" type="date" min="@low" max="@high" class="form-control" />
+                            <span asp-validation-for="DueDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <a class="btn btn-light" asp-action="Index"><i class="bi bi-box-arrow-left"></i> Show All</a>
+                        <button type="submit" class="float-end btn btn-outline-warning">
+                            Save & Update <i class="bi bi-cloud-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

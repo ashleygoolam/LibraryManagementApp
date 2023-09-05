@@ -1,0 +1,43 @@
+﻿@model LibraryManagementApp.Models.LibraryCard
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Create</h1>
+
+<h4>LibraryCard <i class="bi bi-credit-card-2-back"></i></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4 offset-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mt-2">
+                <label asp-for="ApplicationUserId" class="from-label">Email</label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>
+            <div class="form-group mt-2">
+                <label asp-for="Balance" class="from-label"></label>
+                <input asp-for="Balance" class="form-control" />
+                <span asp-validation-for="Balance" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check mt-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isActivated" /> @Html.DisplayNameFor(model => model.isActivated)
+                </label>
+            </div>
+            <div class="form-group mt-5">
+                <a asp-action="Index" class="btn btn-light me-2">
+                    <i class="bi bi-box-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-outline-success">
+                    Create <i class="bi bi-cloud-check"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

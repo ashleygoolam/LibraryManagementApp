@@ -1,0 +1,154 @@
+﻿@using LibraryManagementApp.Enums;
+@using LibraryManagementApp.Data.ViewModels;
+@model BookIssueVM
+
+@{
+    ViewData["Title"] = "Issue a Book";
+    //var today = DateTime.Now.Date;
+    string name = User.Identity.Name;
+    var today = DateTime.Now.Date.ToString("yyyy-MM-dd");//Thh:mm
+    var low = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+    var high = DateTime.Now.AddDays(14).ToString("yyyy-MM-dd");
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 class="text-center">Issue a Book</h4>
+        </p>
+        <div class="row" style="margin: auto; display: flex; justify-content: center;">
+            <div class="col" style="max-width: 500px;">
+                <div class="card">
+                    <div class="card-body">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="form-group mb-2">
+                                <label class="form-label">Book: </label>
+                                <input id="searchInput" class="form-control" />
+                            </div>
+                            <div class="form-group mb-2">
+                                <select id="instance" asp-for="BookInstanceId" class="form-control form-select">
+                                    <option disabled selected>Choose the Isbn...</option>
+                                </select>
+                                <span asp-validation-for="BookInstanceId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label asp-for="BorrowersName" class="form-label">Email: </label>
+                                <input asp-for="BorrowersName" id="borrower" class="form-control" />
+                                <span asp-validation-for="BorrowersName" class="text-danger"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-2">
+                                    <label asp-for="BorrowingLibrariansName" class="form-label">Borrowing Librarian: </label>
+                                    <input asp-for="BorrowingLibrariansName" class="form-control" value="@name" />
+                                    <span asp-validation-for="BorrowingLibrariansName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 form-group mb-2">
+                                    <label asp-for="bookStatus" class="form-label">Status:</label>
+                                    <select asp-for="bookStatus" class="form-control form-select" asp-items="Html.GetEnumSelectList<BookStatus>()"></select>
+                                    <span asp-validation-for="bookStatus" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-2">
+                                    <label asp-for="TimeBorrowed" class="form-label">Issue Date: </label>
+                                    <input asp-for="TimeBorrowed" class="form-control" type="date" value="@today" />
+                                    <span asp-validation-for="TimeBorrowed" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 orm-group mb-2">
+                                    <label asp-for="DueDate" class="form-label">Due Date: </label>
+                                    <input type="date" asp-for="DueDate" min="@low" max="@high" class="form-control" />
+                                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <a class="btn btn-light" asp-action="Index"><i class="bi bi-box-arrow-left"></i> Show All</a>
+                                <button type="submit" class="float-end btn btn-outline-success">
+                                    Create <i class="bi bi-check2-circle"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            const title = $("#searchInput");
+            const instance = $("#instance");
+            instance.prop('disabled', true);
+            let bookId = 0;
+            let name = "";
+
+            $("#searchInput").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Book/GetTitle",
+                        type: "POST",
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.name, value: item.name, id: item.id };
+                            }));
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    //console.log(ui);
+                    bookId = ui.item.id;
+                    name = ui.item.label;
+                }
+            });
+            
+            $("#searchInput").blur(function () {
+                if ($(this).val() == "0") {
+                    instance.prop('disabled', true);
+                    instance.val("0");
+                }
+                else {
+                    instance.prop('disabled', false);
+                    instance.empty();
+                    $.ajax({
+                        url: "/BookInstance/GetInstance?bookId=" + bookId,
+                        method: "get",
+                        success: function (data) {
+                            instance.append($('<option/>', {
+                                value: '0',
+                                text: 'Choose the Isbn...',
+                                disabled: true,
+                                selected: true
+                            }));
+                            $(data).each(function (index, item) {
+                                instance.append($('<option/>', { value: item.id, text: item.number }));
+                            });
+                        }
+                    });
+                }
+            });
+
+            $("#borrower").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Account/GetBorrower",
+                        type: "POST",
+                        dataType: "json",
+                        data: { term: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.name, value: item.name };
+                            }));
+                        }
+                    });
+                },
+                minLength: 5
+            });
+        });
+    </script>
+}

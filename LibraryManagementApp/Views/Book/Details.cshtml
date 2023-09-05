@@ -1,0 +1,100 @@
+﻿@model Book
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+<div class="row" style="max-width: 1240px; margin:auto;">
+    <div class="col-md-9" style="padding-left:30px;">
+        <div class="card mt-5" style="max-width: 850px;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <img src="~/images/Books/@Model.Image" class="card-img-top" alt="Image for @Model.Title">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="card-header">
+                                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Librarian")))
+                                {
+                                    <h5 class="card-title float-start"><strong>@Model.Title</strong></h5>
+                                    <a asp-action="Edit" asp-route-id="@Model.Id">
+                                        <small class="float-end text-body-secondary"><i class="bi bi-pencil-square"></i> Edit</small>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <h5 class="card-title float-start"><strong>@Model.Title</strong></h5>
+                                }
+                            </div>
+                            <div class="card-text mt-3">
+                                Description:<br />
+                                <strong class="text-white">@Model.Description</strong>
+                            </div>
+                            <p class="card-text mt-4">
+                                Category: <strong class="text-white">@Model.bookCategory</strong><br />
+                                Created On: <strong class="text-white">@Model.DateCreated.ToString("dd MMM yy")</strong><br />
+                                Status: 
+                                @if (Model.AvailableAmount > 0)
+                                {
+                                    <span class="badge rounded-pill text-bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill text-bg-primary">UpComing</span>
+                                }
+                            </p>
+                            @*<h2>Copies:</h2>
+                            <ul>
+                                \foreach (var copy in Model.Copies)
+                                {
+                                    <li>\copy.Id</li>
+                                }
+                            </ul>*@
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="float-start btn btn-light" asp-action="Index"><i class="bi bi-arrow-left-circle"></i> Back to List</a>
+                @*<a class="btn btn-warning float-end  @((Model.AvailableAmount > 0) ? "" : "disabled")"
+                   asp-controller="Orders"
+                   asp-action="AddItemToBusket" asp-route-id="@Model.Id">
+                    <i class="bi bi-cart-plus"></i> Reserve a copy (Price @Model.Price.ToString("c"))
+                </a>
+                <button type="button" class="float-end btn btn-warning">Add to Busket <i class="bi bi-archive"></i></button>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mt-5" style="max-width:350px; padding-left:50px;">
+        <div class="row">
+            <p class="card-text mt-4">About the Author(s):</p>
+            <div class="row">
+                @foreach (var author in Model.Author_Book)
+                {
+                    <div class="col text-center mt-2">
+                        <p class="card-text" style="max-width:100px;">
+                            <a asp-controller="Author" asp-action="Details" asp-route-id="@author.AuthorId" style="text-decoration:none;">
+                                <img class="rounded-circle" src="~/Images/Authors/@author.Author?.ProfilePicture" alt="Image for @author.Author?.FullName" style="width: 100px;">
+                                <br />
+                                <strong>@author.Author?.FullName</strong>
+                            </a>
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row mt-5">
+            <p class="card-text mt-4">Publisher:</p>
+            <div class="col text-center mt-2">
+                <p class="card-text" style="max-width:100px;">
+                    <a asp-controller="Publishers" asp-action="Details" asp-route-id="@Model.PublisherId" style="text-decoration:none;">
+                        <img class="rounded-circle" src="~/Images/Publishers/@Model.Publisher?.PublisherLogo" alt="Image for @Model.Publisher?.PublisherName" style="width: 100px;">
+                        <br />
+                        <strong>@Model.Publisher?.PublisherName</strong>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

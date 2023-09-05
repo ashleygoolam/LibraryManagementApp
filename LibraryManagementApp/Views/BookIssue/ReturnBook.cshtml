@@ -1,0 +1,75 @@
+﻿@using LibraryManagementApp.Enums;
+@model BookIssue
+
+@{
+    ViewData["Title"] = "Return A Book";
+    string name = User.Identity.Name;
+    var today = DateTime.Now.Date.ToString("yyyy-MM-dd");
+}
+
+<div class="row" style="margin: auto; display: flex; justify-content: center;">
+    <h4 class="text-center mt-3 mb-4">Return A Book</h4>
+    <div class="col" style="max-width: 500px;">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger text-center mb-3" style="margin:auto;">
+                <small>@TempData["Error"]</small>
+            </div>
+        }
+        <form asp-action="ReturnBook">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="BookInstanceId" />
+            <input type="hidden" asp-for="BorrowersName" />
+            <input type="hidden" asp-for="ReturningLibrariansName" value="@name" />
+            <input type="hidden" asp-for="TimeReturned" value="@today" />
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Isbn Number:</strong>
+                        </td>
+                        <td>
+                            <p>@Model.BookInstance?.IsbnNumber</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Borrowed By:</strong>
+                        </td>
+                        <td>
+                            <p>@Model.BorrowersName</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Returned By:</strong>
+                        </td>
+                        <td>
+                            <p>@name</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Time Returned:</strong>
+                        </td>
+                        <td>
+                            <p>@today</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <label asp-for="bookReturnStatus" class="form-label">Returned Status:</label>
+                <select asp-for="bookReturnStatus" class="form-control form-select" asp-items="Html.GetEnumSelectList<BookReturnStatus>()"></select>
+            </div>
+            <div class="form-group mt-5">
+                <a class="btn btn-light" asp-action="Index"><i class="bi bi-box-arrow-left"></i> Cancel</a>
+                <button type="submit" class="float-end btn btn-outline-warning">
+                    Procced <i class="bi bi-cloud-check"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model BookInstance
+@{
+    ViewData["Title"] = "Delete a Book Instance";
+}
+
+<div class="container">
+    <p>
+        <h4 class="text-center mt-3 mb-4">Are You Sure?</h4>
+    </p>
+    <div class="row">
+        <div style="max-width: 450px; margin: auto;">
+            <div class="text-center">
+                <p class="mb-2">The following Instance will be deleted and all the Information will be lost!</p>
+            </div>
+            <div class="card" style="margin-top:70px;">
+                <div class="card-body text-white">
+                    <div class="mb-2">
+                        <h5><strong>Book:</strong> @Model.Book!.Title</h5>
+                    </div>
+                    <div class="mb-2">
+                        <h5><strong>Isbn Number:</strong> @Model.IsbnNumber</h5>
+                    </div>
+                    <div class="mb-2">
+                        <h5><strong>Book Status:</strong> @Model.bookStatus</h5>
+                    </div>
+                    <div>
+                        <h5><strong>Book Availability:</strong> @Model.bookAvailability</h5>
+                    </div>
+                </div>
+            </div>
+        
+            <div style="margin-top:140px;">
+                <form asp-action="Delete">
+                    <a asp-action="Index" class="btn btn-light">
+                        <i class="bi bi-box-arrow-left"></i> Cancel
+                    </a>
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger float-end">Confirm <i class="bi bi-trash3"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

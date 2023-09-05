@@ -1,0 +1,46 @@
+﻿﻿@using Microsoft.AspNetCore.Identity
+@using LibraryManagementApp.Data;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav me-3">
+        @await Component.InvokeAsync("BusketSummary")
+    </ul>
+    <div class="btn-group">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                style="text-decoration:none;" aria-haspopup="true" aria-expanded="false">
+                @{
+                    var user = await UserManager.FindByNameAsync(User.Identity?.Name!);
+                    string profilePic = user?.ProfilePicture!;
+                    var profilePicture = ViewData["ProfilePicture"] as string;
+                }
+                <img class="rounded-circle" src="@Url.Content(string.IsNullOrEmpty(profilePic)
+                    ? "~/images/usersprofilepictures/empty-pic.png"
+                    : "~/images/usersprofilepictures/" + profilePic)" alt="@User.Identity!.Name" style="width: 40px;" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end">
+                <a class="dropdown-item" asp-controller="Account" asp-action="ManageAccount">
+                    <i class="bi bi-person-gear"></i> Manage Account
+                </a>
+                <a class="dropdown-item" asp-controller="BookIssue" asp-action="History">
+                    <i class="bi bi-clock-history"></i> History
+                </a>
+                <a class="dropdown-item" asp-controller="LibraryCards" asp-action="PersonalCard">
+                    <i class="bi bi-credit-card-2-back"></i> Library Card
+                </a>
+                <div class="dropdown-divider"></div>
+                <form class="dropdown-item" asp-controller="Account" asp-action="Logout">
+                    <button class="btn btn-light w-100" type="submit">Logout <i class="bi bi-box-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <a class="btn btn-outline-primary ms-4 me-3" asp-controller="Account" asp-action="Register">Register <i class="bi bi-person-add"></i></a>
+    <a class="btn btn-light" asp-controller="Account" asp-action="Login">Sign In <i class="bi bi-box-arrow-in-right"></i></a>
+}

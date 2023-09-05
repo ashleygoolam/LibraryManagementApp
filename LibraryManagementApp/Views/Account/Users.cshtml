@@ -1,0 +1,54 @@
+﻿@model PaginatedList<ApplicationUser>
+
+@{
+    ViewData["Title"] = "List of all users";
+
+    var viewData = new ViewDataDictionary(ViewData);
+    viewData["actionPage"] = "Users";
+}
+
+<div class="row">
+    <div class="col" style="margin:auto; max-width:1100px;">
+        <h4 class="text-center mt-4 mb-5">List of all registered users</h4>
+
+        <table class="table">
+            <thead>
+                <tr class="text-center">
+                    <th>@Html.DisplayNameFor(model => model.First().ProfilePicture)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().FullName)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().Email)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <img class="rounded-circle" src="@Url.Content(string.IsNullOrEmpty(item.ProfilePicture)
+                                ? "~/images/usersprofilepictures/empty-pic.png"
+                                : "~/images/usersprofilepictures/" + item.ProfilePicture)" alt="@item.FullName" style="width: 40px;" />
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-outline-primary" asp-controller="Account" asp-action="UsersDetails" asp-route-id="@item.Id"><i class="bi bi-info-circle"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<partial name="_Pager" view-data="viewData" />

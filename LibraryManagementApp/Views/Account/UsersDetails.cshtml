@@ -1,0 +1,61 @@
+﻿@using LibraryManagementApp.Models;
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-center mt-4">Details</h1>
+
+<div>
+    <h4>User <i class="bi bi-person"></i></h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-8 offset-4">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FullName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FullName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LibraryCard!.CardNumber)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LibraryCard!.CardNumber)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LibraryCard!.Balance)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LibraryCard!.Balance)
+                </dd>
+            </dl>
+            <div class="mt-5">
+                @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <div>
+                        @using (Html.BeginForm("EditUserRole", "Account", FormMethod.Post))
+                        {
+                            <input asp-action="EditUserRole" type="submit" value="Make Librarian"
+                            asp-route-desiredRole="Librarian" asp-route-userId="@Model!.Id" class="btn btn-info me-2" />
+
+                            <input asp-action="EditUserRole" type="submit" value="Make Admin"
+                            asp-route-desiredRole="Admin" asp-route-userId="@Model!.Id" class="btn btn-warning" />
+                        }
+                    </div>
+                    <a asp-action="Users" class="btn btn-light mt-3">
+                        <i class="bi bi-box-arrow-left"></i> Back
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

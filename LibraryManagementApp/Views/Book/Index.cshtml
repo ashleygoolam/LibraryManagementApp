@@ -1,0 +1,63 @@
+﻿@using LibraryManagementApp.Models
+@model PaginatedList<Book>
+
+@{
+    ViewData["Title"] = "List of Books";
+
+    var viewData = new ViewDataDictionary(ViewData);
+    viewData["actionPage"] = "Index";
+}
+
+<div class="container" id="element3">
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-4 mb-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card" style="width: 270px;">
+                    @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Librarian")))
+                    {
+                        <div class="card-header">
+                            <a class="float-start" asp-action="Edit" asp-route-id="@item.Id">
+                                <small class="text-body-secondary"><i class="bi bi-pencil-square"></i> Edit</small>
+                            </a>
+                        </div>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <img src="~/images/Books/@item.Image" class="card-img-top" alt="Click here to view @item.Title" style="max-height:400px;"/>
+                    </a>
+                    <div class="card-body">
+                        <div class="row">
+                            <h4 class="card-title"><strong>@item.Title</strong></h4>
+                            <div class="col-md-9"><small class="card-text">Category: <strong>@item.bookCategory</strong></small></div>
+                            <div class="col-md-3">
+                                @if (item.AvailableAmount > 0)
+                                {
+                                    <span class="float-end badge rounded-pill text-bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="float-end badge rounded-pill text-bg-primary">UpComing</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    
+</div>
+
+<partial name="_Pager" view-data="viewData" />
+
+@if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Librarian")))
+{
+    @await Html.PartialAsync("_CreateItem", "Book")
+}
+
+@section scripts{
+    <script>
+        const element3 = document.getElementById('element3');
+        TweenMax.from(element3, 1, { opacity: 0, delay: .15, y: -30, ease: Expo.easeInOut })
+    </script>
+}

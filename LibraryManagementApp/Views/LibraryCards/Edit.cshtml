@@ -1,0 +1,50 @@
+﻿@model LibraryManagementApp.Models.LibraryCard
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="mt-4 text-center">Edit</h1>
+
+<h4>LibraryCard <i class="bi bi-credit-card-2-back"></i></h4>
+<hr />
+<div class="row">
+    <div class="col-md-8 offset-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group col-md-6">
+                <label asp-for="CardNumber" class="form-label"></label>
+                <input asp-for="CardNumber" class="form-control" />
+                <span asp-validation-for="CardNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 mt-2">
+                <label asp-for="ApplicationUserId" class="form-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId" ></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label mt-2">
+                    <input class="form-check-input" asp-for="isActivated" /> @Html.DisplayNameFor(model => model.isActivated)
+                </label>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Balance" class="form-label"></label>
+                <input asp-for="Balance" class="form-control" />
+                <span asp-validation-for="Balance" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-5">
+                <a asp-action="Index" class="btn btn-light me-2">
+                    <i class="bi bi-box-arrow-left"></i> Show All
+                </a>
+                <button type="submit" class="btn btn-outline-success">
+                    Update <i class="bi bi-cloud-check"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

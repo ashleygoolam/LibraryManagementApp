@@ -1,0 +1,78 @@
+﻿@using LibraryManagementApp.Data.ViewModels;
+@using LibraryManagementApp.Enums;
+@model NewPublisherVM
+
+@{
+    ViewData["Title"] = "Update Publisher";
+}
+
+<div class="container">
+    <p>
+        <h4 class="text-center mb-5">Edit a Publisher</h4>
+    </p>
+    <div style="max-width: 700px; margin: auto;">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <div class="row g-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <label asp-for="PublisherName" class="form-label">Publisher's Name:</label>
+                                    <input asp-for="PublisherName" type="text" class="form-control" id="inputTitle">
+                                    <span asp-validation-for="PublisherName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="PublisherDescription" class="form-label">Description:</label>
+                                    <textarea asp-for="PublisherDescription" class="form-control" id="inputDescription" rows="4"></textarea>
+                                    <span asp-validation-for="PublisherDescription" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Rating" class="form-label">Rating:</label>
+                                    <select asp-for="Rating" class="form-control form-select" asp-items="Html.GetEnumSelectList<Rating>()">
+                                        <option value="" disabled selected>Choose a Rating...</option>
+                                    </select>
+                                    <span asp-validation-for="Rating" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="PublisherLogo" class="form-label">Publisher's Logo:</label>
+                            <input asp-for="PublisherLogo" class="form-control" id="fileUpload" onchange="getImagePreview(event)">
+                            <span asp-validation-for="PublisherLogo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center mb-3">
+                    <img class="rounded-circle" id="imagePreview" src="~/Images/Publishers/@Model.PublisherLogoPreview" alt="Image for @Model.PublisherName"
+                         style="width: 250px;">
+                </div>
+                <div class="mt-5">
+                    <a asp-action="Index"
+                       class="btn btn-light">
+                        <i class="bi bi-box-arrow-left"></i> Back to List
+                    </a>
+                    <button type="submit"
+                            class="float-end btn btn-outline-warning" style="margin-right: 90px;">
+                        Save & Update <i class="bi bi-cloud-check"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        function getImagePreview(event) {
+            var image = URL.createObjectURL(event.target.files[0]);
+            console.log(event.target.files[0]);
+            var previewSection = document.getElementById('imagePreview');
+            previewSection.src = image;
+        }
+    </script>
+}

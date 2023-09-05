@@ -1,0 +1,39 @@
+﻿@{
+    int previousPageIndex = Model.PageIndex - 1;
+    int nextPageIndex = Model.PageIndex + 1;
+
+    int firstPage = 1;
+    int totalPages = Model.TotalPages;
+    int currentPage = Model.PageIndex;
+
+    var prevDisabed = !Model.PreviousPage ? "disabled" : "";
+    var nextDisabed = !Model.NextPage ? "disabled" : "";
+
+    var searchedString = ViewData["Param1"] as string;
+    var actionPage = ViewData["actionPage"] as string;
+}
+
+@*<div style="margin:30px 0 0 108px;">*@
+<div class="container" style="position:sticky;">
+    @if (totalPages > 0)
+    {
+        <ul class="pagination">
+            <li class="page-item">
+                <a asp-action="@actionPage" asp-route-searchString="@searchedString" asp-route-i="@previousPageIndex" class="page-link @prevDisabed">
+                    &laquo; prev
+                </a>
+            </li>
+            @for (int page = firstPage; page <= totalPages; page++)
+            {
+                <li class="page-item @(page == currentPage ? "active" : "")">
+                    <a asp-action="@actionPage" asp-route-searchString="@searchedString" asp-route-i="@(page)" class="page-link">@(page)</a>
+                </li>
+            }
+            <li class="page-item">
+                <a asp-action="@actionPage" asp-route-searchString="@searchedString" asp-route-i="@nextPageIndex" class="page-link @nextDisabed">
+                    next &raquo;
+                </a>
+            </li>
+        </ul>
+    }
+</div>

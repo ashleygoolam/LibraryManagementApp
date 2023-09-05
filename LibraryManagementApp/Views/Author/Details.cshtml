@@ -1,0 +1,31 @@
+﻿@model Author
+@{
+    ViewData["Title"] = "Author Details";
+}
+
+<div class="container">
+    <p>
+        <h4 class="text-center mb-5">Author's Details</h4>
+    </p>
+    <div class="row">
+        <div style="max-width: 450px; margin: auto;">
+            <div class="text-center">
+                <img class="rounded-circle" src="~/Images/Authors/@Model.ProfilePicture" alt="Image for @Model.FullName" style="width: 300px;">
+                <h3 class="mt-2 mb-2">@Model.FullName</h3>
+                <p>@Model.Biography</p>
+            </div>
+            <div class="mt-5">
+                <a asp-action="Index"
+                class="btn btn-light">
+                    <i class="bi bi-box-arrow-left"></i> Show All
+                </a>
+                @if (User.Identity!.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Librarian")))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="float-end btn btn-outline-warning">
+                        <i class="bi bi-pencil-square"></i> Edit Author
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+﻿@using LibraryManagementApp.Data.ViewModels;
+@using LibraryManagementApp.Enums;
+@model NewBookVM
+
+@{
+    ViewData["Title"] = "Create a new Book";
+}
+
+<div class="container">
+    <h4 class="text-center mt-4 mb-3">Create a new Book</h4>
+    <div class="row">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3" style="width:900px; margin:auto;">
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger text-center mb-3" style="margin:auto;">
+                        <small>@TempData["Error"]</small>
+                    </div>
+                }
+                <div class="col-md-8 bg-light" style="border-radius:4px; padding-bottom:5px;">
+                    <div class="row g-2 mt-1">
+                        <div class="col-md-6">
+                            <label asp-for="Title" class="form-label">Title:</label>
+                            <input asp-for="Title" type="text" class="form-control" id="inputTitle">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DateCreated" class="form-label">Created On:</label>
+                            <input asp-for="DateCreated" type="date" class="form-control" id="inputDate">
+                            <span asp-validation-for="DateCreated" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Price" class="form-label">Price:</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping">$</span>
+                                <input asp-for="Price" min="1" class="form-control" aria-describedby="addon-wrapping">
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PublisherId" class="form-label">Select a Publisher:</label>
+                            <select asp-for="PublisherId" class="form-control form-select" asp-items="ViewBag.Publishers"></select>
+                            <span asp-validation-for="PublisherId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="bookCategory" class="form-label">Category:</label>
+                            <select asp-for="bookCategory" class="form-control form-select" asp-items="Html.GetEnumSelectList<BookCategory>()"></select>
+                            <span asp-validation-for="bookCategory" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Image" class="form-label">Image:</label>
+                            <input asp-for="Image" class="form-control" id="fileUpload" onchange="getImagePreview(event)">
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="AuthorIds" class="form-label">Select the Author(s):</label>
+                            <select asp-for="AuthorIds" class="form-control" asp-items="ViewBag.Authors" multiple></select>
+                            <span asp-validation-for="AuthorIds" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Description" class="form-label">Description:</label>
+                            <textarea asp-for="Description" class="form-control" id="inputDescription" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="Location" class="form-label">Location:</label>
+                            <input asp-for="Location" type="text" class="form-control" id="inputLocation">
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img class="card-img-top mt-2" id="imagePreview" style="border-radius: 5px; padding-top: 2px;" alt="Image for the new Book">
+                </div>
+                <div class="row g-2 mt-3">
+                    <div class="col-md-6">
+                        <a class="float-start btn btn-light" asp-action="Index">
+                            <i class="bi bi-arrow-left-circle"></i> Back to List
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="float-end btn btn-outline-success">Create Book <i class="bi bi-journal-check"></i></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function getImagePreview(event) {
+            var image = URL.createObjectURL(event.target.files[0]);
+            console.log(event.target.files[0]);
+            var previewSection = document.getElementById('imagePreview');
+            previewSection.src = image;
+        }
+    </script>
+}
